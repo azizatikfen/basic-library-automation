@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "node server.js"
   },
   "author": "Yusuf Turhan PAPURCU",
   "license": "ISC",
