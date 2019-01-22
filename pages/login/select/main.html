@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>AAFL Kütüphane</title>
+        <script>
+            function user(){
+                window.location = "http://localhost/login/user"
+            }
+            function admin(){
+                window.location = "http://localhost/login/admin"
+            }
+            window.onload = function(){
+                var b1 = document.getElementById('b1')
+                var b2 = document.getElementById('b2')
+                
+                b1.style.padding = '10% 22%'
+                b2.style.padding = '10% 22%'
+            }
+        </script>
+        <style>
+            html {
+                display: flex;
+                width: 100%;
+                height: 100%;
+                align-items: center;
+                justify-content: center;
+            }
+            body {
+                background-color: #f1f1f1;
+                align-items: center;
+                justify-content:center;
+                width: 100%;
+                height: 100%;
+                flex-direction: row;
+                margin: 0px;
+            }
+            .button {
+                background-color: white;
+                color: black;
+                border: 2px solid #008CBA; 
+                border-radius: 20px;
+                -webkit-transition-duration: 0.5s;
+                transition-duration: 0.5s;
+                font-size: 20px;
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+                margin: 7%;
+                flex-direction: column;
+            }
+            
+            .button:hover {
+                background-color: #008CBA; 
+                color: white;
+                font-size: 22px;
+                border-radius: 25px;
+            }
+            .button2 {
+                background-color: white;
+                color: black;
+                border: 2px solid #f44336; 
+                border-radius: 20px; 
+                -webkit-transition-duration: 0.5s; 
+                transition-duration: 0.5s;
+                font-size: 20px;
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+                margin: 7%;
+                flex-direction: column;
+
+            }
+            .button2:hover {
+                background-color: #f44336; 
+                color: white;
+                font-size: 22px;
+                border-radius: 25px; 
+            }
+            div.logo{
+                display: flex;
+                position: relative;
+                width: 100%;
+                justify-content: center;
+                top:12%;
+            }
+            div.buttons{
+                display: flex;
+                position: relative;
+                flex-direction: row;
+                width: 100%;
+                top: 20%;
+                height: 30%;
+
+            }
+            div.but{
+                display: flex;
+                position: relative;
+                flex: 1;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+            }
+        </style>
+
+    </head>
+
+<script>
+/*
+            */
+</script>
+
+    <body>
+            <img src="https://e-okul.meb.gov.tr/images/bg.jpg" style="position:absolute;z-Index:-3;width:100%;height:100%;">
+            <div class="logo">
+                <img src="http://localhost/image" style="width:92px;height:92px;">
+            </div>
+            <div class="buttons">
+                <div class="but">
+                    <button class="button" id="b1" onclick="user()">Öğrenci Girişi</button>
+                </div>
+                <div class="but">
+                    <button class="button2" id="b2" onclick="admin()">Öğretmen Girişi</button>
+                </div>
+            </div>
+            
+    </body>
+
+
+
+
+</html>
+

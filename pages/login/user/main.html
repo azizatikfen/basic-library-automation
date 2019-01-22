@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kullanıcı</title>
+    
+    <script>
+        function gonder(){
+            const passwd    = document.getElementById("passwd").value;
+            const name      = document.getElementById("name").value;
+            postRequest('http://localhost/login/api/user', {user: {
+                username: name,
+                password: passwd
+            }})
+            .catch(err => {
+                if(err != null){
+                console.log(err)
+            }
+            }).then(data => {
+                if(data.errors === "KAH"){
+                    document.getElementById("111").style.visibility = 'visible';
+                    document.getElementById("222").style.visibility = 'hidden';
+                    document.getElementById("333").style.visibility = 'hidden';
+                    document.getElementById("444").style.visibility = 'hidden';
+                    return 0;
+
+                }
+                if(data.errors  === "SH"){
+                    document.getElementById("111").style.visibility = 'hidden';
+                    document.getElementById("222").style.visibility = 'visible';
+                    document.getElementById("333").style.visibility = 'hidden';
+                    document.getElementById("444").style.visibility = 'hidden';
+                    return 0;
+
+                }
+                if(data.errors  === "ADH"){
+                    document.getElementById("111").style.visibility = 'hidden';
+                    document.getElementById("222").style.visibility = 'hidden';
+                    document.getElementById("333").style.visibility = 'visible';
+                    document.getElementById("444").style.visibility = 'hidden';
+                    return 0;
+
+                }
+                if(data.errors  === "SKH"){
+                    document.getElementById("111").style.visibility = 'hidden';
+                    document.getElementById("222").style.visibility = 'hidden';
+                    document.getElementById("333").style.visibility = 'hidden';
+                    document.getElementById("444").style.visibility = 'visible';
+                    return 0;
+                }
+                localStorage.setItem("id",data._id)
+                window.location = "http://localhost/main/user"
+                
+            }) 
+            }
+        
+
+        function postRequest(url, data) {
+            return fetch(url, {
+                credentials: 'same-origin', // 'include', default: 'omit'
+                method: 'POST', // 'GET', 'PUT', 'DELETE', etc.
+                body: JSON.stringify(data), // Coordinate the body type with 'Content-Type'
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                    }),
+                }).then(response => response.json())}
+    </script>
+    <style>
+        body{
+            background-color: #bfbfbf;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            align-self: center;
+        }
+        html{
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+        div.main{
+            display: flex;
+            flex-direction: column;
+            background-color: #e6e6e6;
+            width: 40%;
+            height: 80%;
+            border-radius: 50px;
+            -webkit-transition-duration: 0.8s; /* Safari */
+            transition-duration: 0.8s;
+            margin-top: 5%;
+            margin-left: 30%;
+        }
+        div.main:hover{
+            box-shadow: 0 8px 16px 0 #555555, 0 6px 20px 0 #555555;
+        }
+        input.asd{
+            display: flex;
+            width: 64%;
+            height: 8%;
+            margin-left: 18%;
+            background-color: white;
+            -webkit-transition-duration: 0.8s; /* Safari */
+            transition-duration: 0.8s;
+            border-radius: 50px;
+            border: 2px solid #008CBA; 
+            padding: 0%;
+            text-align: center;
+            font-size: 22px;
+            color: #000000;
+        }
+        input.asd:focus{
+            color: white;
+            box-shadow: 0 8px 16px 0 #ffffff, 0 6px 20px 0 #ffffff;
+            background-color: #008CBA;
+        }
+        h2.lol{
+            font-size: 26px;
+            color: #008CBA;
+            font-family: sans-serif;
+            margin-left: 19%; 
+            font-weight: '300';
+        }
+        .button {
+                position: absolute;
+                z-index: 2;
+                background-color: white;
+                color: black;
+                border: 2px solid #008CBA; 
+                padding: 2% 6%;
+                border-radius: 20px;
+                -webkit-transition-duration: 0.5s; /* Safari */
+                transition-duration: 0.5s;
+                font-size: 20px;
+                box-shadow: 1 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+                margin: 3%;
+                left: 38%;
+                align-self: center;
+                color: #008CBA;
+        }
+        .button:hover {
+                border-radius: 25px;
+                box-shadow: 0 6px 6px 0 #ffffff, 0 4px 16px 0 #ffffff;
+                background-color: #008CBA;
+                color: #ffffff;
+        }
+        h3.kah{
+
+                font-size: 24px;
+                color: #008CBA;
+                font-family: sans-serif;
+                top:70%;
+                align-self: center;
+                font-weight: normal;
+                visibility: hidden;
+                position: absolute;
+                z-index: 2;
+        }
+        h3.sh{
+
+                font-size: 24px;
+                color: #008CBA;
+                font-family: sans-serif;
+                top:70%;
+                visibility: hidden;
+                position: absolute;
+                z-index: 3;
+                align-self: center;
+                font-weight: normal;
+
+        }
+        h3.ah{
+
+                font-size: 24px;
+                color: #008CBA;
+                font-family: sans-serif;
+                top:70%;
+                visibility: hidden;
+                position: absolute;
+                z-index: 4;
+                align-self: center;
+                font-weight: normal;
+
+        }
+        h3.skh{
+
+                font-size: 24px;
+                color: #008CBA;
+                font-family: sans-serif;
+                top:70%;
+                visibility: hidden;
+                position: absolute;
+                z-index: 5;
+                align-self: center;
+                font-weight: normal;
+
+        }
+        a{
+                text-decoration:none;
+                font-weight: normal;
+
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="main">
+        <h1 style="align-self: center;font-family:sans-serif;color:#008CBA ">Öğrenci Girişi</h1>
+        <h2 class="lol">Kullanici Adı</h2>
+        <input type="text" placeholder="" class= "asd"name="no" id="name">
+        <h2 class="lol">Şifre</h2>
+        <input type="password" placeholder="" class= "asd"name="password" id="passwd">
+        <div class="b1">
+            <button onclick = 'gonder()' class="button" type="button">Giriş Yap</button>
+        </div>
+        <h3 class="kah" id="111">Bir kullanıcı adı giriniz</h3>
+        <h3 class="sh"  id="222">Şifreyi giriniz</h3>
+        <h3 class="ah"  id="333"><a href="http://localhost/login/admin">Öğretmen bölümünden</a> giriş yapınız</h3>
+        <h3 class="skh"  id="444">Kullanıcı Adı veya Şifre Hatalı</h3>
+
+    </div>
+    
+    
+</body>
+
+
+</html>

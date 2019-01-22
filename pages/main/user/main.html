@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AAFL Kutuphane</title>
+
+    <script>
+        let slct = false;
+        let selection = 1;
+        function postRequest(url, data) {
+            return fetch(url, {
+                credentials: 'same-origin', // 'include', default: 'omit'
+                method: 'POST', // 'GET', 'PUT', 'DELETE', etc.
+                body: JSON.stringify(data), // Coordinate the body type with 'Content-Type'
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                    }),
+                }).then(response => response.json())}
+
+        window.onload = function(){
+            const id = localStorage.getItem("id")
+            if(!id){
+                window.location = "http://localhost/login"
+            }
+        
+            //localStorage.removeItem("id")
+            postRequest("http://localhost/api/user",{
+                _id:id,
+                auth:10293847566
+            }).then((user)=>{
+                if(!user){
+                window.location = "http://localhost/login"
+                }
+                setName(user.name)
+                for (i in user.books){
+                    getBook(0,user.books[i])
+                    console.log(user.books[i])
+                }
+                for (i in user.teslim){
+                    getBook(1,user.teslim[i])
+                }
+            }).catch((err)=>{if (err) throw err;});
+
+            
+        }
+        function getBook(mode,id){
+                postRequest("http://localhost/api/books",{
+                    _id:id,
+                    auth:10293847566
+                }).then((data)=>{
+                    console.log(data)
+                    if(mode === 0){
+                        addBook(data.name,data.author,data.publishinghouse,data.printedyear,data.no);
+                    }
+                    if (mode === 1){
+                        addTeslim(data.name,data.author,data.publishinghouse,data.timeleft,data.no);
+                    }
+                }).catch((err)=>{if (err) throw err;})
+                
+            }
+        window.onbeforeunload   = function(){
+            localStorage.removeItem("id")
+        }
+        function addBook(isim,yazar,ye,by,kitapno) {
+            var div = document.createElement('div');
+
+            div.className = 'dkitap';
+            div.innerHTML =
+                '<div class="kitap">\
+                            <div style="flex:1.3;display: flex;flex-direction: column;">\
+                                    <h3 class="kitapad">'+isim+'</h3>\
+                                    <div style="flex:0.8;display: flex;flex-direction: column">\
+                                    <h3 class="yazar">Yazar: '+yazar+'</h3>\
+                                    </div>\
+                                    <div style="flex:1;display: flex;flex-direction: column">\
+                                    <h3 class="ye">Yayın Evi: '+ye+'</h3>\
+                                    </div>\
+                            </div>\
+                            <div style="flex:1;display:flex;flex-direction: column;">\
+                                    <div style="flex:2"></div>\
+                                    <div style="flex:0.3;">\
+                                    <h3 class="numara">Kitap Numarası: '+kitapno+'</h3>\
+                                    </div>\
+                                    <div style="flex:0.7">\
+                                    <h3 class="bs">Basım yılı : '+by+'</h3>\
+                                    </div>\
+                            </div>\
+                            </div>';
+
+            document.getElementById('okunanlar').appendChild(div);
+}
+        function addTeslim(isim,yazar,ye,ks,kitapno) {
+            let div = document.createElement('div');
+            div.className = 'dkitap';
+            div.innerHTML =
+                '<div class="kitap">\
+                            <div style="flex:1.3;display: flex;flex-direction: column;">\
+                                    <h3 class="kitapad">'+isim+'</h3>\
+                                    <div style="flex:0.8;display: flex;flex-direction: column">\
+                                    <h3 class="yazar">Yazar: '+yazar+'</h3>\
+                                    </div>\
+                                    <div style="flex:1;display: flex;flex-direction: column">\
+                                    <h3 class="ye">Yayın Evi: '+ye+'</h3>\
+                                    </div>\
+                            </div>\
+                            <div style="flex:1;display:flex;flex-direction: column;">\
+                                    <div style="flex:2"></div>\
+                                    <div style="flex:0.3;">\
+                                    <h3 class="numara">Kitap Numarası: '+kitapno+'</h3>\
+                                    </div>\
+                                    <div style="flex:0.7">\
+                                    <h3 class="bs">Kalan Süre : '+ks+'</h3>\
+                                    </div>\
+                            </div>\
+                            </div>';
+
+            document.getElementById('teslim').appendChild(div);
+}
+        function setName(name){
+            var div = document.createElement('div');
+            div.className   = "user"
+            div.innerHTML   = '<h3 class="name">'+name+'</h3>'
+            document.getElementById('content').appendChild(div);
+
+        }
+    </script>
+
+    <script>
+        function select(no){
+            let b1 = document.getElementById('selectbutton1');
+            let b2 = document.getElementById('selectbutton2');
+            let b3 = document.getElementById('selectbutton3');
+            let b4 = document.getElementById('selectbutton4');
+            let b5 = document.getElementById('selectbutton5');
+            if (!slct){
+                b1.style.zIndex = 2;
+                b2.style.zIndex = 2;
+                b2.style.top = '8%';
+                b3.style.zIndex = 2;
+                b3.style.top = '16%';
+                b4.style.zIndex = 2;
+                b4.style.top = '24%';
+                b5.style.zIndex = 2;
+                b5.style.top = '32%';
+            }
+            if(slct){
+                if(no === 1){
+                    b1.style.zIndex = 2;
+                    b1.style.top =  '0%';
+                    b2.style.zIndex = -1;
+                    b2.style.top = '0%';
+                    b3.style.zIndex = -2;
+                    b3.style.top = '0%';
+                    b4.style.zIndex = -3;
+                    b4.style.top = '0%';
+                    b5.style.zIndex = -4;
+                    b5.style.top = '0%';
+                    selection = 1;
+                }
+                else if(no === 2){
+                    b2.style.zIndex = 2;
+                    b1.style.zIndex = -1;
+                    b2.style.top = '0%';
+                    b3.style.zIndex = -2;
+                    b3.style.top = '0%';
+                    b4.style.zIndex = -3;
+                    b4.style.top = '0%';
+                    b5.style.zIndex = -4;
+                    b5.style.top = '0%';
+                    selection = 2;
+                }
+                else if(no === 3){
+                    b3.style.zIndex = 2;
+                    b2.style.zIndex = -1;
+                    b2.style.top = '0%';
+                    b3.style.top = '0%';
+                    b4.style.zIndex = -3;
+                    b4.style.top = '0%';
+                    b5.style.zIndex = -4;
+                    b5.style.top = '0%';
+                    selection = 3;
+
+                }
+                else if(no === 4){
+                    b4.style.zIndex = 2;
+                    b2.style.zIndex = -1;
+                    b2.style.top = '0%';
+                    b3.style.zIndex = -2;
+                    b3.style.top = '0%';
+                    b4.style.top = '0%';
+                    b5.style.zIndex = -4;
+                    b5.style.top = '0%';
+                    selection = 4;
+
+                }
+                else if(no === 5){
+                    b5.style.zIndex = 2;
+                    b2.style.zIndex = -1;
+                    b2.style.top = '0%';
+                    b3.style.zIndex = -2;
+                    b3.style.top = '0%';
+                    b4.style.zIndex = -3;
+                    b4.style.top = '0%';
+                    b5.style.top = '0%';
+                    selection = 5;
+                }
+            }
+            slct = !slct
+            
+        }
+    </script>
+
+    <script>
+        function ara(){
+            let stext = document.getElementById('serachtext').value;
+            let data = {serach:stext,type:selection}
+            postRequest("http://localhost/api/serach/book",data)
+            .then((books)=>{
+                console.log(books)
+                var x = document.getElementById('yerlestir')
+                while (x.firstChild){
+                    x.removeChild(x.firstChild)
+                }
+                for (i in books){
+                    findedBook(books[i].name,books[i].author,books[i].publishinghouse,books[i].printedyear,books[i].no,books[i].user)
+                }
+            })
+            .catch((err)=> {if (err) throw err;})
+        }
+        function findedBook(isim,yazar,ye,by,kitapno,user) {
+            var div = document.createElement('div');
+            
+            var username = ""
+            if(user === null){
+                username = "Kütüphanede"
+                div.className = 'findkitap';
+                div.id = "useres"
+                div.innerHTML =
+                '<div class="kitap">\
+                            <div style="flex:1.3;display: flex;flex-direction: column;">\
+                                    <h3 class="kitapad">'+isim+'</h3>\
+                                    <div style="flex:0.8;display: flex;flex-direction: column">\
+                                    <h3 class="yazar">Yazar: '+yazar+'</h3>\
+                                    </div>\
+                                    <div style="flex:1;display: flex;flex-direction: column">\
+                                    <h3 class="ye">Yayin Evi: '+ye+'</h3>\
+                                    </div>\
+                            </div>\
+                            <div style="flex:1;display:flex;flex-direction: column;">\
+                                    <div style = "flex:1">\
+                                        <h3 class="numara">Nerede : '+username+'</h3>\
+                                        </div>\
+                                    <div style="flex:1;">\
+                                    <h3 class="numara">Kitap Numarası: '+kitapno+'</h3>\
+                                    </div>\
+                                    <div style="flex:1">\
+                                    <h3 class="bs">Basım yılı : '+by+'</h3>\
+                                    </div>\
+                            </div>\
+                            </div>';
+            
+            
+            
+            document.getElementById('yerlestir').appendChild(div);
+            }else if (user){
+                postRequest("http://localhost/api/serach/user/id",{id:user,auth:10293847566})
+                .then((data,callback)=>{
+                    username = data.name
+                    div.className = 'findkitap';
+                    div.id = "useres"
+                    div.innerHTML =
+                '<div class="kitap">\
+                            <div style="flex:1.3;display: flex;flex-direction: column;">\
+                                    <h3 class="kitapad">'+isim+'</h3>\
+                                    <div style="flex:0.8;display: flex;flex-direction: column">\
+                                    <h3 class="yazar">Yazar: '+yazar+'</h3>\
+                                    </div>\
+                                    <div style="flex:1;display: flex;flex-direction: column">\
+                                    <h3 class="ye">Yayin Evi: '+ye+'</h3>\
+                                    </div>\
+                            </div>\
+                            <div style="flex:1;display:flex;flex-direction: column;">\
+                                    <div style = "flex:1">\
+                                        <h3 class="numara">Nerede : '+username+'</h3>\
+                                        </div>\
+                                    <div style="flex:1;">\
+                                    <h3 class="numara">Kitap Numarası: '+kitapno+'</h3>\
+                                    </div>\
+                                    <div style="flex:1">\
+                                    <h3 class="bs">Basım yılı : '+by+'</h3>\
+                                    </div>\
+                            </div>\
+                            </div>';
+            
+            
+            
+            document.getElementById('yerlestir').appendChild(div);
+                    
+                })
+                .catch((err)=>{if (err) throw err;})
+            }
+            
+}
+    </script>
+    <style>
+        html{
+
+            display: flex;
+            width: 100%;
+            height: 200%;
+            background-color: #bfbfbf 
+        }
+        body{
+
+            display: flex;
+            width: 100%;
+            height: 100%;
+
+        }
+        div.user{
+            display: flex;
+            width: 30%;
+            height: 75px;
+            background-color: #f2f2f2;
+            margin: 1%;
+            -webkit-transition-duration: 0.8s; /* Safari */
+            transition-duration: 0.8s;
+            border-radius: 20px 100px 100px 20px;
+        }
+        div.user:hover{
+            box-shadow: 0 1px 2px 0 #555555, 0 2px 5px 0 #555555;
+            background-color: #ffffff
+        }
+        h3.name{
+            margin-left: 10%;
+            color: #008CBA;
+            font-size: 22px;
+            font-family: sans-serif;
+            font-weight:bold;
+        }
+        div.okunanlar{
+            display: flex;
+            position: absolute;
+            z-index: 1;
+            width: 45%;
+            top:20%;
+            left: 2%;
+            height: 78%;
+            background-color: #f2f2f2;
+            border-radius: 60px 60px 60px 60px;
+            -webkit-transition-duration: 0.8s; /* Safari */
+            transition-duration: 0.8s;
+            align-items: center;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        div.okunanlar:hover{
+            border: 0px solid #555555;
+            box-shadow: 0 4px 4px 0 #555555, 0 4px 10px 0 #555555;
+            background-color: #ffffff
+        }
+        h3.okunanla{
+            color: #008CBA;
+            font-size: 26px;
+            font-family: sans-serif;
+            font-weight:bold;
+        }
+        div.dkitap{
+            margin-top: 6%;
+            width: 88%;
+            height: 170px;
+            border-radius: 60px 60px 60px 60px;
+            box-shadow: 0 1px 1px 0 #555555, 0 1px 6px 0 #555555;
+        }
+        div.kitap{
+            display: flex;
+            width: 100%;
+            height: 100%;
+            margin-bottom: 3%
+        }
+        h3.kitapad{
+            color: #008CBA;
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight:bold;
+            margin-left: 10%; 
+            height: 3%;
+        }
+        h3.yazar{
+            color: #008CBA;
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight:bold;
+            margin-left: 6%; 
+            height: 3%;
+
+        }
+        /*Basim Yili*/
+        h3.bs{  
+            color: #008CBA;
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight:bold;
+            height: 3%;
+            top: 0px;
+        }
+        h3.ye{
+            color: #008CBA;
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight:bold;
+            margin-left:6%;
+            
+        }
+        h3.numara{
+            color: #008CBA;
+            font-size: 20px;
+            font-family: sans-serif;
+            font-weight:bold;
+        }
+        div.teslim{
+            display: flex;
+            position: absolute;
+            z-index: 1;
+            width: 45%;
+            top:20%;
+            height: 78%;
+            left: 52%;
+            background-color: #f2f2f2;
+            border-radius: 60px 60px 60px 60px;
+            align-items: center;
+            flex-direction: column;
+            overflow-y: auto;
+            -webkit-transition-duration: 0.8s; /* Safari */
+            transition-duration: 0.8s;
+        }
+        div.teslim:hover{
+            border: 0px solid #555555;
+            box-shadow: 0 4px 4px 0 #555555, 0 4px 10px 0 #555555;
+            background-color: #ffffff
+        }
+        div.serach{
+            position: absolute;
+            z-index: 1;
+            display: flex;
+            width: 90%;
+            height: 100%;
+            flex-direction: column;
+            margin-left:5%; 
+            top:100%;
+            background-color: #f2f2f2; 
+            box-shadow: 0 1px 1px 0 #555555, 0 1px 6px 0 #555555;
+            border-radius: 15px;
+            -webkit-transition-duration: 0.8s; /* Safari */
+            transition-duration: 0.8s;
+        }
+        div.serach:hover{
+            background-color: #ffffff; 
+            box-shadow: 0 2px 2px 0 #555555, 0 2px 8px 0 #555555;
+        }
+        div.serachbar{
+            display: flex;
+            background-color: #f2f2f2;
+            height: 8%;
+        }
+        input.serach{
+            width: 55%;
+            height: 92%;
+            border-radius: 5px 5px 0px 0px;
+            border: #000000 solid 1px;
+            font-size: 24px;
+            background-color: #f2f2f2;
+            -webkit-transition-duration: 0.8s; /* Safari */
+            transition-duration: 0.8s;
+        }
+        input.serach:hover{
+            background-color: #ffffff;
+
+        }
+        div.select{
+            display: flex;
+            width: 25%;
+            height: 100%;
+        }
+        button.select{
+            position: absolute;
+            display: flex;
+            width: 25%;
+            height: 8%;
+            font-size: 26px;
+            background-color: #008CBA;
+            color: #ffffff;
+            align-items: center;
+            justify-content: center;
+            border: #ffffff solid 1px;
+            -webkit-transition-duration: 0.8s; /* Safari */
+            transition-duration: 0.8s;
+        }
+        button.yolla{
+            display: flex;
+            width: 20%;
+            height: 100%;
+            font-size: 26px;
+            background-color: #008CBA;
+            color: #ffffff;
+            align-items: center;
+            justify-content: center;
+            border: #ffffff solid 1px
+        }
+        div.findkitap{
+            margin-top: 6%;
+            width: 94%;
+            height: 220px;
+            border-radius: 60px 60px 60px 60px;
+            box-shadow: 0 1px 1px 0 #555555, 0 1px 6px 0 #555555;
+            align-self: center
+        }
+    </style>
+</head>
+    <body id="content">
+        <div class="okunanlar" id="okunanlar">
+            <h3 class="okunanla">Okunan Kitaplar</h3>
+        </div>
+
+        <div class="teslim" id="teslim">
+            <h3 class="okunanla">Teslim Edilecek Kitaplar</h3>
+        </div>
+
+        <div class="serach">
+            <div class="serachbar">
+                <input type="text" class="serach" id="serachtext">
+                <div class="select" id="selectdiv">
+                    <button class="select" style="z-index: 1;" id="selectbutton1" onclick="select(1)">Kitap Adı</button>
+                    <button class="select" style="z-index:-1;" id="selectbutton2" onclick="select(2)">Kitap Evi</button>
+                    <button class="select" style="z-index:-2;" id="selectbutton3" onclick="select(3)">Basım Yılı</button>
+                    <button class="select" style="z-index:-3;" id="selectbutton4" onclick="select(4)">Kitap Numarası</button>
+                    <button class="select" style="z-index:-4;" id="selectbutton5" onclick="select(5)">Kitap Yazarı</button>
+                </div>
+                <button class="yolla" onclick="ara()">Arama Yap</button>
+            </div>
+            <div style="display:flex;height:92%;width:100%;flex-direction: column;overflow-y: scroll;" id="yerlestir">
+
+            </div>
+            
+        </div>
+        
+    
+    </body>
+</html>
