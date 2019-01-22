@@ -285,7 +285,7 @@ module.exports = function(app){
                 user[i].password = null;
                 user[i].username = null;
                 }catch{
-
+                    null;
                 }
             }
             return res.send(user)
