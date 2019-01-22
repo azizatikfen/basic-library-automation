@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect('http://kutuphanedb-kutuphane.7e14.starter-us-west-2.openshiftapps.com:27017/login');
+mongoose.connect('mongodb://localhost/login');
 
 require('./models/User');
 require('./models/Book');
